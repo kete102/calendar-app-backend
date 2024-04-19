@@ -79,8 +79,7 @@ const loginUser = async (req, res = response) => {
     console.log(error)
     res.status(500).json({
       ok: false,
-      msg: 'Error al registrar usuario',
-      error: error
+      msg: 'Error al iniciar session: ' + error.message
     })
   }
 }
