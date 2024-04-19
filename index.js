@@ -19,10 +19,10 @@ app.use(express.static('public'))
 app.use(express.json())
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/events', require('./routes/events'));
+app.use('/api/auth', require('./routes/auth'))
+app.use('/api/events', require('./routes/events'))
 
 // Listen petitions
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 4000, () => {
   console.log(`Petitions server listening on port ${process.env.PORT}`)
 })
