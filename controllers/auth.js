@@ -24,7 +24,7 @@ const createUser = async (req, res = response) => {
     //Guardamos el usuario en la base de datos
     await user.save()
 
-    //Generate JWT 
+    //Generate JWT
     const token = await generateJWT(user.id, user.name)
 
     res.status(201).json({
@@ -43,7 +43,6 @@ const createUser = async (req, res = response) => {
   }
 }
 
-
 const loginUser = async (req, res = response) => {
   const { email, password } = req.body
 
@@ -53,7 +52,7 @@ const loginUser = async (req, res = response) => {
     if (!usuario) {
       return res.status(400).json({
         ok: false,
-        msg: "El usuario no existe"
+        msg: 'El usuario no existe'
       })
     }
 
@@ -63,7 +62,7 @@ const loginUser = async (req, res = response) => {
     if (!validPassword) {
       return res.status(400).json({
         ok: false,
-        msg: "Invalid password"
+        msg: 'Invalid password'
       })
     }
 
@@ -75,15 +74,13 @@ const loginUser = async (req, res = response) => {
       name: usuario.name,
       token
     })
-
-
   } catch (error) {
     //Este error solo se muestra en el servidor
     console.log(error)
     res.status(500).json({
       ok: false,
-      msg: 'Error al registrar usuario'
-
+      msg: 'Error al registrar usuario',
+      error: error
     })
   }
 }
