@@ -1,28 +1,27 @@
 const { response } = require('express')
-const Event = require("../models/Event")
+const Event = require('../models/Event')
 
 const getEvent = async (req, res = response) => {
   const events = await Event.find().populate('user', 'name')
 
   return res.status(200).json({
     ok: true,
-    msg: events
+    events: events
   })
 }
 
 const createEvent = async (req, res = response) => {
-
   //Check event
   const event = new Event(req.body)
 
   try {
-    //Hay que especificar el usuario para poder guardar 
+    //Hay que especificar el usuario para poder guardar
     event.user = req.uid
     const savedEvent = await event.save()
 
     res.status(200).json({
       ok: true,
-      msg: savedEvent
+      event: savedEvent
     })
   } catch (error) {
     res.status(500).json({
@@ -33,7 +32,6 @@ const createEvent = async (req, res = response) => {
 }
 
 const updateEvent = async (req, res = response) => {
-
   const eventId = req.params.id
 
   const uid = req.uid
@@ -51,7 +49,7 @@ const updateEvent = async (req, res = response) => {
     if (event.user.toString() !== uid) {
       return res.status(401).json({
         ok: false,
-        msg: "Not authorized to edit this event"
+        msg: 'Not authorized to edit this event'
       })
     }
 
@@ -60,25 +58,24 @@ const updateEvent = async (req, res = response) => {
       user: uid
     }
 
-    const updatedEvent = await Event.findByIdAndUpdate(eventId, eventToUpdate, { new: true })
+    const updatedEvent = await Event.findByIdAndUpdate(eventId, eventToUpdate, {
+      new: true
+    })
 
     res.json({
       ok: true,
-      msg: `Event updated: ${updatedEvent}`
+      event: `Event updated: ${updatedEvent}`
     })
-
   } catch (error) {
     console.log(error)
     res.status(400).json({
       ok: false,
-      msg: "An error ocurred"
+      msg: 'An error ocurred'
     })
-
   }
 }
 
 const deleteEvent = async (req, res = response) => {
-
   const eventId = req.params.id
 
   const uid = req.uid
@@ -96,21 +93,20 @@ const deleteEvent = async (req, res = response) => {
     if (event.user.toString() !== uid) {
       return res.status(401).json({
         ok: false,
-        msg: "Not authorized to edit this event"
+        msg: 'Not authorized to edit this event'
       })
     }
 
     await Event.findByIdAndDelete(eventId)
 
     res.json({
-      ok: true,
+      ok: true
     })
-
   } catch (error) {
     console.log(error)
     res.status(400).json({
       ok: false,
-      msg: "An error ocurred"
+      msg: 'An error ocurred'
     })
   }
 }
